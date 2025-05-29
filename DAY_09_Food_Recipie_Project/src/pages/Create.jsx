@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { nanoid } from "nanoid";
 import { recipecontext } from "../context/RecipeContext";
@@ -55,7 +55,6 @@ const Create = () => {
               </option>
               <option value="Vegetables & Fruits">Vegetables & Fruits</option>
               <option value="Grains & Cereals">Grains & Cereals</option>
-              <option value="Protein Foods">Protein Foods</option>
               <option value="Dairy & Alternatives">Dairy & Alternatives</option>
             </select>
             {errors?.category?.message && (
