@@ -13,7 +13,7 @@ const Mainroutes = () => {
           <Route path='/' element={<Home/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/recipe/detail/:id' element={<RecipeDetails/>}/>
-          {/* <Route path='/recipes' element={<Recipies/>}/> */}
+          <Route path='/recipes' element={<Recipies/>}/>
           <Route path='/create-recipe' element={<Create/>}/>
           <Route path='/recipe/update/:id' element={<Create/>}/>
 

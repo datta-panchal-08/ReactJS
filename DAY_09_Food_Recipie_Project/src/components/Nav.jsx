@@ -29,7 +29,7 @@ const Nav = () => {
       </NavLink>
 
       {/* Recipes Link */}
-      {/* <NavLink
+      <NavLink
         to="/recipes"
         className={({ isActive }) =>
           `px-3 py-1 rounded-full text-xl transition-all duration-300 ${
@@ -38,7 +38,7 @@ const Nav = () => {
         }
       >
         Recipes
-      </NavLink> */}
+      </NavLink>
 
       {/* Create Recipe Link */}
       <NavLink
