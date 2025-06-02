@@ -4,10 +4,10 @@ export const recipecontext = createContext(null);
 
 const RecipeContext = ({ children }) => {
 
- const [data, setdata] = useState(recipesData);
+ const [data, setdata] = useState();
 useEffect(() => {
-  setdata(recipesData); 
-}, [recipesData]);
+  setdata(JSON.parse( localStorage.getItem("recipes")) || []); 
+}, []);
 
   return (
     <recipecontext.Provider value={{ data, setdata }}>

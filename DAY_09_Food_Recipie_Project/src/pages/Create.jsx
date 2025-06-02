@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { nanoid } from "nanoid";
 import { recipecontext } from "../context/RecipeContext";
-
+import {toast} from 'react-toastify'
 const Create = () => {
   const { data, setdata } = useContext(recipecontext);
 
@@ -15,8 +15,13 @@ const Create = () => {
 
   const submitHandler = (recipe) => {    
     recipe.id = nanoid();
-    setdata([...data, recipe]);
+    const copydata = [...data];
+    copydata.push(recipe);
+    setdata(copydata);
+    localStorage.setItem("recipes",JSON.stringify(copydata));
+    toast.success("new recipe created");
     reset();
+    navigate("/recipes");
   };
 
   return (
@@ -53,9 +58,9 @@ const Create = () => {
               <option value="" disabled>
                 Select Category
               </option>
-              <option value="Vegetables & Fruits">Vegetables & Fruits</option>
-              <option value="Grains & Cereals">Grains & Cereals</option>
-              <option value="Dairy & Alternatives">Dairy & Alternatives</option>
+              <option value="Vegetarian">Vegetarian </option>
+                  <option value="Vegan">Vegan</option>
+                  <option value="Dessert">Dessert </option>
             </select>
             {errors?.category?.message && (
               <small className="text-red-400">{errors?.category?.message}</small>
@@ -116,13 +121,13 @@ const Create = () => {
             <h5 className="text-lg">Ingredients</h5>
             <textarea
               className="px-4 py-1 resize-none rounded-md border border-zinc-300 outline-none"
-              {...register("ingredients", {
+              {...register("ingrediants", {
                 required: "Ingredients cannot be empty",
               })}
               placeholder="Write ingredients, comma separated"
             ></textarea>
-            {errors?.ingredients?.message && (
-              <small className="text-red-400">{errors?.ingredients?.message}</small>
+            {errors?.ingrediants?.message && (
+              <small className="text-red-400">{errors?.ingrediants?.message}</small>
             )}
           </div>
         </div>

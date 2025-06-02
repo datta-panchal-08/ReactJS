@@ -1,24 +1,54 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { recipecontext } from "../context/RecipeContext";
 import { recipesData } from "../data";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 const RecipeDetails = () => {
   const { data, setdata } = useContext(recipecontext);
   const [visible, setVisible] = useState(false);
+  const [favorite, setfavorite] = useState(JSON.parse(localStorage.getItem("fav")) || []);
   const { id } = useParams();
   const navigate = useNavigate();
   const recipe = data?.find((rec) => rec.id == id);
 
   const deleteHandler = (id) => {
+    let favdata = JSON.parse(localStorage.getItem("fav"));
+    let filterfav = favdata.filter((item)=> item.id !== id);
+    setfavorite(filterfav);
+    localStorage.setItem("fav",JSON.stringify(filterfav));
     let filterddata = data?.filter((item) => {
       return item.id !== id;
-    });
+    });    
 
     setdata(filterddata);
+    localStorage.setItem("recipes", JSON.stringify(filterddata));
     toast.success("Deleted!");
-    navigate("/");
+    navigate("/recipes");
+  };
+
+    useEffect(()=>{
+      console.log("recipe mounted");
+
+      return () =>{
+        console.log("recipe unmounted");
+      }
+
+    },[favorite])
+
+
+  const likeHandler = () => {
+    const copyfav = [...favorite];
+    copyfav.push(recipe);
+    setfavorite(copyfav);
+    localStorage.setItem("fav", JSON.stringify(copyfav));
+  };
+
+  const dislikeHandler = () => {
+    let favdata = favorite.filter((item)=>item.id !== recipe?.id);
+    setfavorite(favdata);
+    localStorage.setItem("fav", JSON.stringify(favdata));
   };
 
   const {
@@ -26,23 +56,26 @@ const RecipeDetails = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({defaultValues:{
-    title:recipe.title,
-    imageUrl:recipe.imageUrl,
-    description:recipe.description,
-    ingrediants:recipe.ingrediants,
-    price:recipe.price,
-    category:recipe.category,
-    instructions:recipe.instructions
-  }});
+  } = useForm({
+    defaultValues: {
+      title: recipe?.title,
+      imageUrl: recipe?.imageUrl,
+      description: recipe?.description,
+      ingrediants: recipe?.ingrediants,
+      price: recipe?.price,
+      category: recipe?.category,
+      instructions: recipe?.instructions,
+    },
+  });
 
   const submitHandler = (recipe) => {
     const index = data?.findIndex((rec) => rec.id == id);
     const copydata = [...data];
-    copydata[index] = {...copydata[index],...recipe}; 
-    setdata(copydata);   
+    copydata[index] = { ...copydata[index], ...recipe };
+    setdata(copydata);
+    localStorage.setItem("recipes", JSON.stringify(copydata));
     toast.success("Recipe Updated!");
-    navigate(-1);
+    navigate("/recipes");
   };
 
   return (
@@ -58,9 +91,22 @@ const RecipeDetails = () => {
           </div>
           <div className="flex flex-col gap-3">
             <h1 className="text-xl text-nowrap flex items-center gap-2 md:text-2xl lg:text-[39px]">
-              {recipe?.title}{" "}
+              {recipe?.title}
               <span className="text-xs md:text-sm lg:text-sm bg-red-500 px-2 rounded-md py-0.5">
                 {recipe?.category}
+              </span>
+              <span className="ml-3">
+                {favorite?.find((item)=> item?.id == recipe?.id) ? (
+                  <FaHeart
+                    onClick={dislikeHandler}
+                    className="text-2xl text-red-500 cursor-pointer"
+                  />
+                ) : (
+                  <FaRegHeart
+                    onClick={likeHandler}
+                    className="text-2xl cursor-pointer"
+                  />
+                )}
               </span>
             </h1>
 
@@ -155,14 +201,9 @@ const RecipeDetails = () => {
                   <option value="" disabled>
                     Select Category
                   </option>
-                  <option value="Vegetables & Fruits">
-                    Vegetables & Fruits
-                  </option>
-                  <option value="Grains & Cereals">Grains & Cereals</option>
-                  <option value="Dairy & Alternatives">
-                    Dairy & Alternatives
-                  </option>
-                  <option value="Beverages">Beverages</option>
+                  <option value="Vegetarian">Vegetarian </option>
+                  <option value="Vegan">Vegan</option>
+                  <option value="Dessert">Dessert </option>
                 </select>
                 {errors?.category?.message && (
                   <small className="text-red-400">

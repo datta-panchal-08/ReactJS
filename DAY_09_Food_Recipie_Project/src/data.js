@@ -45,7 +45,7 @@ export const recipesData = [
     title: "Cucumber Mint Salad",
     category: "Vegetables & Fruits",
     description: "A truly refreshing and light salad featuring cool cucumbers and invigorating mint leaves, brightened by a squeeze of lemon. It's an ideal palate cleanser or a crisp accompaniment to any meal.",
-    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPLRuebf8v7ILZjszo4uJEN29nauRTFMd1sx9xp6NEOiFEjunRs6Nkab9gEq5AY8Dp09E&usqp=CAU", // Pexels
+    imageUrl: "https://www.flavourandsavour.com/wp-content/uploads/2015/02/Thai-cucumber-mint-salad-sq-500x500.jpg", // Pexels
     ingrediants: "Cucumbers, Mint leaves, Lemon juice, Salt",
     instructions: "Wash and thinly slice the **cucumbers** into rounds or half-moons. Finely chop the fresh **mint leaves**. In a bowl, combine the sliced cucumbers and chopped mint. Squeeze fresh **lemon juice** over the mixture and sprinkle with a pinch of **salt**. Toss gently to combine all ingredients. Serve chilled for the best refreshing experience.",
     price: 70
